@@ -1,0 +1,106 @@
+﻿@page
+@model Advertisement.Pages.Advertisements.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                    @Html.DisplayNameFor(model => model.Advertisement[0].Title)
+                </a>
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Advertisement[0].Description)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Advertisement[0].Link1)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Advertisement[0].Link2)
+            </th>*@
+            @*<th>
+                @Html.DisplayNameFor(model => model.Advertisement[0].Link3)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Advertisement[0].Price)
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
+                    @Html.DisplayNameFor(model => model.Advertisement[0].CreationDate)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Advertisement) {
+        <tr>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Title)</a> Method for getting a specific ad
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Link1)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Link2)
+            </td>*@
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Link3)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Advertisement.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Advertisement.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Advertisement.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Advertisement.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
